@@ -7,9 +7,8 @@ class Collaborator
     # Get Issue Commenters and Add as Collaborators
     successfully_added_users = []
     current_collaborators = get_current_collaborators(repo_name)
-    issueComments = client.issue_comments(repo_name, issue_num)
     begin
-      issueComments.each do |comment|
+      client.issue_comments(repo_name, issue_num).each do |comment|
         username = comment[:user][:login]
         puts "adding #{username}"
         next if current_collaborators[username] # skip adding if already a collaborator
@@ -52,12 +51,6 @@ class Collaborator
         abort "ERR posting comment (#{e.inspect})"
       end
     end
-
-    if issueComments.size > 15
-      puts "There are over 15 (#{issueComments.size} to be exact) comments, cleaning up..."
-      removeExtraComments(repo_name, issueComments)
-    end
-
   end
 
   def self.addByIssue(repo_name:, issue_num:, user_login:)
@@ -97,19 +90,4 @@ class Collaborator
       [collaborator[:login], collaborator[:login]]
     }]
   end
-
-  def self.removeExtraComments( repo_name, comments )
-    totalComments = comments.size
-    puts "> Initial size: #{totalComments}"
-    comments.each do |comment|
-      puts "removing comment id #{comment[:id]}"
-      client.delete_comment(repo_name, comment[:id])
-      totalComments -= 1
-      puts "now there are #{totalComments} comments"
-      if totalComments < 15 then
-        break
-      end
-    end
-  end
-
 end
