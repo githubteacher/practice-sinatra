@@ -8,9 +8,12 @@ jsontest = "none"
 post '/payload' do
   push = JSON.parse(request.body.read)
   puts "I got some JSON: #{push.inspect}"
-  jsontest = "I got some JSON: #{push.inspect}"
-  Collaborator.add repo_name: "githubschool/open-enrollment-classes-introduction-to-github", issue_num: 927
-  Collaborator.add repo_name: "githubschool/on-demand-github-pages", issue_num: 1
+
+  repo = push["repository"]["full_name"].to_s
+  issue = push["issue"]["number"].to_i
+  user = push["issue"]["user"]["login"].to_s
+
+  Collaborator.addByIssue repo_name: repo, issue_num: issue, user_login: user
 end
 
 get '/' do
