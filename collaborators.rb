@@ -3,7 +3,7 @@ require 'octokit'
 Octokit.auto_paginate = true
 
 class Collaborator
-  def self.add(repo_name:, issue_num:)
+  def self.addByComment(repo_name:, issue_num:)
     # Get Issue Commenters and Add as Collaborators
     successfully_added_users = []
     current_collaborators = get_current_collaborators(repo_name)

@@ -15,10 +15,10 @@ post '/payload' do
 
   if repo === "githubschool/open-enrollment-classes-introduction-to-github" && issue == 927
     puts "adding to githubschool/open-enrollment-classes-introduction-to-github"
-    Collaborator.add repo_name: "githubschool/open-enrollment-classes-introduction-to-github", issue_num: 927
+    Collaborator.addByComment repo_name: "githubschool/open-enrollment-classes-introduction-to-github", issue_num: 927
   elsif repo ===  "githubschool/on-demand-github-pages" && issue == 1
     puts "adding to githubschool/on-demand-github-pages"
-    Collaborator.add repo_name: "githubschool/on-demand-github-pages", issue_num: 1
+    Collaborator.addByComment repo_name: "githubschool/on-demand-github-pages", issue_num: 1
   else
     Collaborator.addByIssue repo_name: repo, issue_num: issue, user_login: user
   end
