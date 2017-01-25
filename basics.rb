@@ -9,11 +9,12 @@ post '/payload' do
   push = JSON.parse(request.body.read)
   puts "I got some JSON: #{push.inspect}"
 
+  action = push["action"].to_s
   repo = push["repository"]["full_name"].to_s
   issue = push["issue"]["number"].to_i
   user = push["issue"]["user"]["login"].to_s
 
-  Collaborator.addByIssue repo_name: repo, issue_num: issue, user_login: user
+  Collaborator.addByIssue(repo_name: repo, issue_num: issue, user_login: user) if action == "opened"
 end
 
 get '/' do
